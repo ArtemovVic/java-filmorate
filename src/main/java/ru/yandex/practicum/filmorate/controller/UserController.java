@@ -66,6 +66,7 @@ public class UserController {
             if (newUser.getName() != null) {
                 oldUser.setName(newUser.getName());
             }
+            oldUser.setBirthday(newUser.getBirthday());
             log.info("User successfully updated: " + oldUser);
 
             return oldUser;
