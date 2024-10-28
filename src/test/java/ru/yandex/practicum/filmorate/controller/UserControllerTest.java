@@ -1,0 +1,81 @@
+package ru.yandex.practicum.filmorate.controller;
+
+import jakarta.validation.ConstraintViolationException;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import ru.yandex.practicum.filmorate.model.User;
+import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@SpringBootTest
+class UserControllerTest {
+    @Autowired
+    UserController userController;
+
+    @Test
+    void ShouldAddUser() {
+        User user = User.builder().email("test@example.com").login("123").birthday(LocalDate.parse("2021-12-03")).build();
+        User addedUser = userController.addUser(user);
+
+        assertNotNull(addedUser);
+        assertEquals(user.getEmail(), addedUser.getEmail());
+        assertEquals(user.getLogin(), addedUser.getLogin());
+        assertNotNull(addedUser.getId());
+    }
+
+    @Test
+    void ShouldDropValidateExpWhenAddUserWithInvalidEmail() {
+        User user = User.builder().email("testexample.com").login("123").birthday(LocalDate.parse("2021-12-03")).build();
+
+        Exception exception = assertThrows(ConstraintViolationException.class, () -> {
+            userController.addUser(user);
+        });
+
+        assertTrue(exception.getMessage().contains("должно иметь формат адреса электронной почты"));
+    }
+
+    @Test
+    void ShouldDropValidateExpWhenAddUserWithBlankEmail() {
+        User user = User.builder().email("").login("123").birthday(LocalDate.parse("2021-12-03")).build();
+
+        Exception exception = assertThrows(ConstraintViolationException.class, () -> {
+            userController.addUser(user);
+        });
+
+        assertTrue(exception.getMessage().contains("не должно быть пустым"));
+    }
+
+    @Test
+    void ShouldDropValidateExpWhenAddUserWithInvalidLogin() {
+        User user = User.builder().email("test@example.com").login("").birthday(LocalDate.parse("2021-12-03")).build();
+
+        Exception exception = assertThrows(ConstraintViolationException.class, () -> {
+            userController.addUser(user);
+        });
+
+        assertTrue(exception.getMessage().contains("не должно быть пустым"));
+    }
+
+    @Test
+    void ShouldAddUserWithOutName() {
+        User user = User.builder().email("test@example.com").login("123").birthday(LocalDate.parse("2021-12-03")).build();
+        User addedUser = userController.addUser(user);
+
+        assertEquals("123", addedUser.getName());
+    }
+
+    @Test
+    void ShouldDropValidateExpWhenAddUserWithInvalidBirthday() {
+        User user = User.builder().email("test@example.com").login("123").birthday(LocalDate.parse("2025-12-03")).build();
+
+
+        Exception exception = assertThrows(ConstraintViolationException.class, () -> {
+            userController.addUser(user);
+        });
+
+        assertTrue(exception.getMessage().contains("должно содержать прошедшую дату или сегодняшнее число"));
+    }
+
+}
