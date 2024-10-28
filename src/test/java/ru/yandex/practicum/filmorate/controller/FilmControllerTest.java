@@ -19,7 +19,7 @@ class FilmControllerTest {
 
 
     @Test
-    void ShouldAddFilm() {
+    void shouldAddFilm() {
         Film film = Film.builder().name("testexample").description("testexample123").releaseDate(LocalDate.parse("2021-12-03")).duration(30).build();
         Film addedFilm = filmController.addFilm(film);
 
@@ -31,7 +31,7 @@ class FilmControllerTest {
     }
 
     @Test
-    void ShouldDropValidateExpWhenAddFilmWithBlankName() {
+    void shouldDropValidateExpWhenAddFilmWithBlankName() {
         Film film = Film.builder().name("").description("testexample123").releaseDate(LocalDate.parse("2021-12-03")).duration(30).build();
 
         Exception exception = assertThrows(ConstraintViolationException.class, () -> {
@@ -42,7 +42,7 @@ class FilmControllerTest {
     }
 
     @Test
-    void ShouldDropValidateExpWhenAddFilmWithInvalidDescription() {
+    void shouldDropValidateExpWhenAddFilmWithInvalidDescription() {
         Film film = Film.builder().name("testexample").description("testexample123testexample123testexatestexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123mple123testexample123testexample123testexample123testexample123testexample123")
                 .releaseDate(LocalDate.parse("2021-12-03")).duration(30).build();
 
@@ -54,7 +54,7 @@ class FilmControllerTest {
     }
 
     @Test
-    void ShouldDropValidateExpWhenAddFilmWithInvalidReleaseDate() {
+    void shouldDropValidateExpWhenAddFilmWithInvalidReleaseDate() {
         Film film = Film.builder().name("testexample").description("testexample123").releaseDate(LocalDate.parse("1021-12-03")).duration(30).build();
 
         Exception exception = assertThrows(ValidationException.class, () -> {
@@ -65,7 +65,7 @@ class FilmControllerTest {
     }
 
     @Test
-    void ShouldDropValidateExpWhenAddFilmWithInvalidDuration() {
+    void shouldDropValidateExpWhenAddFilmWithInvalidDuration() {
         Film film = Film.builder().name("testexample").description("testexample123").releaseDate(LocalDate.parse("2021-12-03")).duration(-30).build();
 
         Exception exception = assertThrows(ConstraintViolationException.class, () -> {

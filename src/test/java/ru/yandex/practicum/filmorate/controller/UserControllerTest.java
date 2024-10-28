@@ -15,7 +15,7 @@ class UserControllerTest {
     UserController userController;
 
     @Test
-    void ShouldAddUser() {
+    void shouldAddUser() {
         User user = User.builder().email("test@example.com").login("123").birthday(LocalDate.parse("2021-12-03")).build();
         User addedUser = userController.addUser(user);
 
@@ -26,7 +26,7 @@ class UserControllerTest {
     }
 
     @Test
-    void ShouldDropValidateExpWhenAddUserWithInvalidEmail() {
+    void shouldDropValidateExpWhenAddUserWithInvalidEmail() {
         User user = User.builder().email("testexample.com").login("123").birthday(LocalDate.parse("2021-12-03")).build();
 
         Exception exception = assertThrows(ConstraintViolationException.class, () -> {
@@ -37,7 +37,7 @@ class UserControllerTest {
     }
 
     @Test
-    void ShouldDropValidateExpWhenAddUserWithBlankEmail() {
+    void shouldDropValidateExpWhenAddUserWithBlankEmail() {
         User user = User.builder().email("").login("123").birthday(LocalDate.parse("2021-12-03")).build();
 
         Exception exception = assertThrows(ConstraintViolationException.class, () -> {
@@ -48,7 +48,7 @@ class UserControllerTest {
     }
 
     @Test
-    void ShouldDropValidateExpWhenAddUserWithInvalidLogin() {
+    void shouldDropValidateExpWhenAddUserWithInvalidLogin() {
         User user = User.builder().email("test@example.com").login("").birthday(LocalDate.parse("2021-12-03")).build();
 
         Exception exception = assertThrows(ConstraintViolationException.class, () -> {
@@ -59,7 +59,7 @@ class UserControllerTest {
     }
 
     @Test
-    void ShouldAddUserWithOutName() {
+    void shouldAddUserWithOutName() {
         User user = User.builder().email("test@example.com").login("123").birthday(LocalDate.parse("2021-12-03")).build();
         User addedUser = userController.addUser(user);
 
@@ -67,7 +67,7 @@ class UserControllerTest {
     }
 
     @Test
-    void ShouldDropValidateExpWhenAddUserWithInvalidBirthday() {
+    void shouldDropValidateExpWhenAddUserWithInvalidBirthday() {
         User user = User.builder().email("test@example.com").login("123").birthday(LocalDate.parse("2025-12-03")).build();
 
 
