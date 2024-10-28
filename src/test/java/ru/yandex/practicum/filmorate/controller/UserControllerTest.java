@@ -30,7 +30,7 @@ class UserControllerTest {
     void shouldDropValidateExpWhenAddUserWithInvalidEmail() {
         User user = User.builder().email("testexample.com").login("123").birthday(LocalDate.parse("2021-12-03")).build();
 
-        Exception exception = assertThrows(ConstraintViolationException.class, () -> {
+        Exception exception = assertThrows(jakarta.validation.ValidationException.class, () -> {
             userController.addUser(user);
         });
 
@@ -41,7 +41,7 @@ class UserControllerTest {
     void shouldDropValidateExpWhenAddUserWithBlankEmail() {
         User user = User.builder().email("").login("123").birthday(LocalDate.parse("2021-12-03")).build();
 
-        Exception exception = assertThrows(ConstraintViolationException.class, () -> {
+        Exception exception = assertThrows(jakarta.validation.ValidationException.class, () -> {
             userController.addUser(user);
         });
 
@@ -72,7 +72,7 @@ class UserControllerTest {
         User user = User.builder().email("test@example.com").login("123").birthday(LocalDate.parse("2025-12-03")).build();
 
 
-        Exception exception = assertThrows(ConstraintViolationException.class, () -> {
+        Exception exception = assertThrows(jakarta.validation.ValidationException.class, () -> {
             userController.addUser(user);
         });
 

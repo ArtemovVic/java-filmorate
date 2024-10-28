@@ -34,7 +34,7 @@ class FilmControllerTest {
     void shouldDropValidateExpWhenAddFilmWithBlankName() {
         Film film = Film.builder().name("").description("testexample123").releaseDate(LocalDate.parse("2021-12-03")).duration(30).build();
 
-        Exception exception = assertThrows(ConstraintViolationException.class, () -> {
+        Exception exception = assertThrows(jakarta.validation.ValidationException.class, () -> {
             filmController.addFilm(film);
         });
 
@@ -46,7 +46,7 @@ class FilmControllerTest {
         Film film = Film.builder().name("testexample").description("testexample123testexample123testexatestexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123mple123testexample123testexample123testexample123testexample123testexample123")
                 .releaseDate(LocalDate.parse("2021-12-03")).duration(30).build();
 
-        Exception exception = assertThrows(ConstraintViolationException.class, () -> {
+        Exception exception = assertThrows(jakarta.validation.ValidationException.class, () -> {
             filmController.addFilm(film);
         });
 
@@ -68,7 +68,7 @@ class FilmControllerTest {
     void shouldDropValidateExpWhenAddFilmWithInvalidDuration() {
         Film film = Film.builder().name("testexample").description("testexample123").releaseDate(LocalDate.parse("2021-12-03")).duration(-30).build();
 
-        Exception exception = assertThrows(ConstraintViolationException.class, () -> {
+        Exception exception = assertThrows(jakarta.validation.ValidationException.class, () -> {
             filmController.addFilm(film);
         });
 
