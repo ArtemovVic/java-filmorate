@@ -14,6 +14,7 @@ class UserControllerTest {
     @Autowired
     UserController userController;
 
+
     @Test
     void shouldAddUser() {
         User user = User.builder().email("test@example.com").login("123").birthday(LocalDate.parse("2021-12-03")).build();
@@ -60,7 +61,7 @@ class UserControllerTest {
 
     @Test
     void shouldAddUserWithOutName() {
-        User user = User.builder().email("test@example.com").login("123").birthday(LocalDate.parse("2021-12-03")).build();
+        User user = User.builder().email("test123@example.com").login("123").birthday(LocalDate.parse("2021-12-03")).build();
         User addedUser = userController.addUser(user);
 
         assertEquals("123", addedUser.getName());
