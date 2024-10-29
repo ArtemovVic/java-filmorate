@@ -41,10 +41,10 @@ class FilmControllerTest {
 
     @Test
     void shouldDropValidateExpWhenAddFilmWithInvalidDuration() {
-        Film film = Film.builder().name("testexample").description("testexample123").releaseDate(LocalDate.parse("2021-12-03")).duration(-30).build();
+        //Film film = Film.builder().name("testexample").description("testexample123").releaseDate(LocalDate.parse("2021-12-03")).duration(-30).build();
 
         Exception exception = assertThrows(ValidationException.class, () -> {
-            filmController.addFilm(film);
+            filmController.addFilm(Film.builder().name("testexample").description("testexample123").releaseDate(LocalDate.parse("2021-12-03")).duration(-30).build());
         });
 
         assertTrue(exception.getMessage().contains("должно быть больше или равно 0"));
