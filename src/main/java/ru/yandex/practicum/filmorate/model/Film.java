@@ -22,6 +22,6 @@ public class Film {
     private String description;
     @NonNull
     private LocalDate releaseDate;
-    @PositiveOrZero
+    @PositiveOrZero(message = "должно быть больше или равно 0")
     private Integer duration;
 }
