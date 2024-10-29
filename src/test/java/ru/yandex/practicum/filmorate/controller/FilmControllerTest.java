@@ -52,7 +52,7 @@ class FilmControllerTest {
 
     @Test
     void shouldDropValidateExpWhenAddFilmWithInvalidDescription() {
-        Film film = Film.builder().name("testexample").description("testexample123testexample123testexatestexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123testexample123mple123testexample123testexample123testexample123testexample123testexample123")
+        Film film = Film.builder().name("testexample").description("t".repeat(201))
                 .releaseDate(LocalDate.parse("2021-12-03")).duration(30).build();
 
         Exception exception = assertThrows(ValidationException.class, () -> {

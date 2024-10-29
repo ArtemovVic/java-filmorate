@@ -34,8 +34,6 @@ class UserControllerTest {
         assertEquals("123", addedUser.getName());
     }
 
-    // Локально тесты работают, но в билде гита безнадежно умирают. По какой причине - я установить не смог.
-
     @Test
     void shouldDropValidateExpWhenAddUserWithInvalidBirthday() {
         User user = User.builder().email("test@example.com").login("123").birthday(LocalDate.parse("2025-12-03")).build();

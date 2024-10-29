@@ -15,10 +15,10 @@ import java.time.LocalDate;
 @Builder
 public class Film {
     private Long id;
-    @NotBlank
+    @NotBlank(message = "не должно быть пустым")
     private String name;
-    @NotBlank
-    @Size(max = 200)
+    @NotBlank(message = "не должно быть пустым")
+    @Size(max = 200, message = "размер должен находиться в диапазоне от 0 до 200")
     private String description;
     @NonNull
     private LocalDate releaseDate;
