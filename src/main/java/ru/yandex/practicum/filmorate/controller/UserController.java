@@ -6,7 +6,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.DuplicatedDataException;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.Collection;
@@ -47,9 +46,7 @@ public class UserController {
     @PutMapping
     public User update(@Valid @RequestBody User newUser) {
         // проверяем необходимые условия
-        if (newUser.getId() == null) {
-            throw new ValidationException("Id должен быть указан");
-        }
+
         if (newUser.getName() == null) {
             newUser.setName(newUser.getLogin());
         }
@@ -57,15 +54,9 @@ public class UserController {
             User oldUser = users.get(newUser.getId());
 
             // если пользователь найден и все условия соблюдены, обновляем её содержимое
-            if (newUser.getEmail() != null) {
-                oldUser.setEmail(newUser.getEmail());
-            }
-            if (newUser.getLogin() != null) {
-                oldUser.setLogin(newUser.getLogin());
-            }
-            if (newUser.getName() != null) {
-                oldUser.setName(newUser.getName());
-            }
+            oldUser.setEmail(newUser.getEmail());
+            oldUser.setLogin(newUser.getLogin());
+            oldUser.setName(newUser.getName());
             oldUser.setBirthday(newUser.getBirthday());
             log.info("User successfully updated: " + oldUser);
 

@@ -6,7 +6,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.DuplicatedDataException;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
+import ru.yandex.practicum.filmorate.exception.ValidationExceptionOfDate;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.time.LocalDate;
@@ -42,16 +42,13 @@ public class FilmController {
             return film;
         }
 
-        throw new ValidationException("Некорректная дата релиза");
+        throw new ValidationExceptionOfDate("Некорректная дата релиза");
 
     }
 
     @PutMapping
     public Film updateFilm(@Valid @RequestBody Film newFilm) {
         // проверяем необходимые условия
-        if (newFilm.getId() == null) {
-            throw new ValidationException("Id должен быть указан");
-        }
 
         if (films.containsKey(newFilm.getId())) {
             Film oldFilm = films.get(newFilm.getId());

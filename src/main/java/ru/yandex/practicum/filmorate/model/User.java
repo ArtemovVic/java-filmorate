@@ -11,15 +11,14 @@ import java.time.LocalDate;
 @EqualsAndHashCode(of = {"email"})
 @Builder
 public class User {
-    Long id;
+    private Long id;
     @NotBlank
     @Email
-    String email;
-
+    private String email;
     @NotBlank
-    String login;
-    String name;
+    private String login;
+    private String name;
     @PastOrPresent
     @NonNull
-    LocalDate birthday;
+    private LocalDate birthday;
 }
