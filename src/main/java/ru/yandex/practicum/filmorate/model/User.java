@@ -6,9 +6,10 @@ import jakarta.validation.constraints.PastOrPresent;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
-@EqualsAndHashCode(of = {"email"})
 @Builder
 public class User {
     private Long id;
@@ -21,4 +22,6 @@ public class User {
     @PastOrPresent(message = "должно содержать прошедшую дату или сегодняшнее число")
     @NonNull
     private LocalDate birthday;
+    final private Set<Long> friendIds = new HashSet<>();
+
 }

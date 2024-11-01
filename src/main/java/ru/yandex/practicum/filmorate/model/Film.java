@@ -6,12 +6,10 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
-/**
- * Film.
- */
 @Data
-@EqualsAndHashCode(of = {"name", "releaseDate"})
 @Builder
 public class Film {
     private Long id;
@@ -24,4 +22,6 @@ public class Film {
     private LocalDate releaseDate;
     @PositiveOrZero(message = "должно быть больше или равно 0")
     private Integer duration;
+    @NonNull
+    final private Set<Long> likes = new HashSet<>();
 }
