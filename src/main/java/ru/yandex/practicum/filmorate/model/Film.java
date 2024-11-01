@@ -22,6 +22,5 @@ public class Film {
     private LocalDate releaseDate;
     @PositiveOrZero(message = "должно быть больше или равно 0")
     private Integer duration;
-    @NonNull
-    final private Set<Long> likes = new HashSet<>();
+    private final Set<Long> likes = new HashSet<>();
 }
