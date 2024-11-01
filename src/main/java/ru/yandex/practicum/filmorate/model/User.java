@@ -22,6 +22,6 @@ public class User {
     @PastOrPresent(message = "должно содержать прошедшую дату или сегодняшнее число")
     @NonNull
     private LocalDate birthday;
-    final private Set<Long> friendIds = new HashSet<>();
+    private final Set<Long> friendIds = new HashSet<>();
 
 }
