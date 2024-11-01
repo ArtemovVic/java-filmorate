@@ -33,7 +33,7 @@ public class UserService {
         return storage.updateUser(newUser);
     }
 
-    public void addFriend(Long id, Long friendId){
+    public void addFriend(Long id, Long friendId) {
         storage.addFriend(id, friendId);
     }
 
