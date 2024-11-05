@@ -15,28 +15,30 @@ import ru.yandex.practicum.filmorate.exception.NotFoundException;
 @Slf4j
 public class ErrorHandler {
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST) //400
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleParameterNotValid(ValidationException e) {
+        log.error(HttpStatus.BAD_REQUEST.toString(), e);
         return new ErrorResponse(e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleBadRequest(BadRequestException e) {
+        log.error(HttpStatus.BAD_REQUEST.toString(), e);
         return new ErrorResponse(e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleAnnotations(MethodArgumentNotValidException e) {
-        log.error("Пользователь указал неполные данные");
-        return new ErrorResponse("Не указаны обязательные данные");
+        log.error(HttpStatus.NOT_FOUND.toString(), e);
+        return new ErrorResponse(e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleNotFound(NotFoundException e) {
-        log.error("Пользователь указал неверные данные");
+        log.error(HttpStatus.NOT_FOUND.toString(), e);
         return new ErrorResponse(e.getMessage());
     }
 

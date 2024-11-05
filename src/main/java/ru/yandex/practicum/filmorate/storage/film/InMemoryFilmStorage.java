@@ -40,11 +40,8 @@ public class InMemoryFilmStorage implements FilmStorage {
             throw new DuplicatedDataException("Этот фильм уже добавлен");
         }
 
-        // формируем дополнительные данные
         film.setId(getNextId());
-        // сохраняем нового пользователя в памяти приложения
         films.put(film.getId(), film);
-        log.info("Film successfully added: " + film);
         return film;
     }
 
@@ -61,8 +58,6 @@ public class InMemoryFilmStorage implements FilmStorage {
             }
             oldFilm.setReleaseDate(newFilm.getReleaseDate());
             oldFilm.setDuration(newFilm.getDuration());
-
-            log.info("Film successfully updated: " + oldFilm);
 
             return oldFilm;
         }

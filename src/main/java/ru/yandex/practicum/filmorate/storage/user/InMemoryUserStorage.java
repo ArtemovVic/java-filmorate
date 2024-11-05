@@ -36,11 +36,9 @@ public class InMemoryUserStorage implements UserStorage {
         if (user.getName() == null) {
             user.setName(user.getLogin());
         }
-        // формируем дополнительные данные
         user.setId(getNextId());
-        // сохраняем нового пользователя в памяти приложения
         users.put(user.getId(), user);
-        log.info("User successfully added: " + user);
+
         return user;
     }
 
@@ -52,13 +50,11 @@ public class InMemoryUserStorage implements UserStorage {
         if (users.containsKey(newUser.getId())) {
             User oldUser = users.get(newUser.getId());
 
-            // если пользователь найден и все условия соблюдены, обновляем её содержимое
             oldUser.setEmail(newUser.getEmail());
             oldUser.setLogin(newUser.getLogin());
             oldUser.setName(newUser.getName());
             oldUser.setBirthday(newUser.getBirthday());
 
-            log.info("User successfully updated: " + oldUser);
             return oldUser;
         }
         log.error("Invalid id: {}", newUser.getId());
@@ -75,7 +71,6 @@ public class InMemoryUserStorage implements UserStorage {
 
         users.get(id).getFriendIds().add(friendId);
         users.get(friendId).getFriendIds().add(id);
-        log.info("Friend successfully added to User with ID: " + id);
     }
 
     @Override
@@ -88,7 +83,6 @@ public class InMemoryUserStorage implements UserStorage {
 
         users.get(id).getFriendIds().remove(friendId);
         users.get(friendId).getFriendIds().remove(id);
-        log.info("Friend successfully removed from User with ID: " + id);
 
     }
 
@@ -103,7 +97,6 @@ public class InMemoryUserStorage implements UserStorage {
                 .map(users::get)
                 .toList();
 
-        log.info("Retrieved friends for user ID {}: ", id);
         return friends;
     }
 
@@ -120,7 +113,6 @@ public class InMemoryUserStorage implements UserStorage {
                 .map(users::get)
                 .toList();
 
-        log.info("Retrieved common friends between user ID {} and user ID {}: {}", id, friendId, commonFriends);
         return commonFriends;
     }
 

@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class FilmService {
 
     private final FilmStorage filmStorage;
@@ -20,19 +22,26 @@ public class FilmService {
     }
 
     public Collection<Film> getFilms() {
+        log.info("Requested list of users");
         return filmStorage.getFilms();
     }
 
     public Film getFilmById(Long id) {
-        return filmStorage.getFilmById(id);
+        Film result = filmStorage.getFilmById(id);
+        log.info("Film successfully received ID: {}", id);
+        return result;
     }
 
     public Film addFilm(Film film) {
-        return filmStorage.addFilm(film);
+        Film result = filmStorage.addFilm(film);
+        log.info("Film successfully added ID: {}", result.getId());
+        return result;
     }
 
     public Film updateFilm(Film newFilm) {
-        return filmStorage.updateFilm(newFilm);
+        Film result = filmStorage.updateFilm(newFilm);
+        log.info("Film successfully update ID: {}", result.getId());
+        return result;
     }
 
     public Collection<Film> popularFilms(int size) {
