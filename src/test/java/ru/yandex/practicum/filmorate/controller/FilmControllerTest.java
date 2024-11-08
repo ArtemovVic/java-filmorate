@@ -4,7 +4,6 @@ import jakarta.validation.ValidationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import ru.yandex.practicum.filmorate.exception.ValidationExceptionOfDate;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.time.LocalDate;
@@ -32,7 +31,7 @@ class FilmControllerTest {
     void shouldDropValidateExpWhenAddFilmWithInvalidReleaseDate() {
         Film film = Film.builder().name("testexample").description("testexample123").releaseDate(LocalDate.parse("1021-12-03")).duration(30).build();
 
-        Exception exception = assertThrows(ValidationExceptionOfDate.class, () -> {
+        Exception exception = assertThrows(ValidationException.class, () -> {
             filmController.addFilm(film);
         });
 
