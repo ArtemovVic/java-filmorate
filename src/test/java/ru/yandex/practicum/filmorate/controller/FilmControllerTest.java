@@ -4,6 +4,7 @@ import jakarta.validation.ValidationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import ru.yandex.practicum.filmorate.dto.FilmDto;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.time.LocalDate;
@@ -18,7 +19,7 @@ class FilmControllerTest {
     @Test
     void shouldAddFilm() {
         Film film = Film.builder().name("testexample").description("testexample123").releaseDate(LocalDate.parse("2021-12-03")).duration(30).build();
-        Film addedFilm = filmController.addFilm(film);
+        FilmDto addedFilm = filmController.addFilm(film);
 
         assertNotNull(addedFilm);
         assertEquals(film.getName(), addedFilm.getName());

@@ -4,59 +4,84 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.dto.FilmDto;
+import ru.yandex.practicum.filmorate.dto.GenreDto;
+import ru.yandex.practicum.filmorate.dto.RatingMPADto;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.service.FilmService;
-import ru.yandex.practicum.filmorate.service.LikeService;
+import ru.yandex.practicum.filmorate.service.FilmDBService;
 
 import java.util.Collection;
+import java.util.List;
 
 @RestController
-@RequestMapping("/films")
+//@RequestMapping("/films")
 @Validated
 public class FilmController {
 
-    private final FilmService filmService;
-    private final LikeService likeService;
+    private final FilmDBService filmService;
+
 
     @Autowired
-    public FilmController(FilmService filmService, LikeService likeService) {
+    public FilmController(FilmDBService filmService) {
         this.filmService = filmService;
-        this.likeService = likeService;
+
     }
 
-    @GetMapping
-    public Collection<Film> getFilms() {
-        return filmService.getFilms();
+    @GetMapping("/films")
+    public Collection<FilmDto> getFilms() {
+        return filmService.getAllFilms();
     }
 
-    @PostMapping
-    public Film addFilm(@Valid @RequestBody Film film) {
-        return filmService.addFilm(film);
+    @PostMapping("/films")
+    public FilmDto addFilm(@Valid @RequestBody Film film) {
+        return filmService.createFilm(film);
     }
 
-    @PutMapping
-    public Film updateFilm(@Valid @RequestBody Film newFilm) {
+    @PutMapping("/films")
+    public FilmDto updateFilm(@Valid @RequestBody Film newFilm) {
         return filmService.updateFilm(newFilm);
     }
 
 
-    @GetMapping("/{id}")
-    public Film getFilmById(@PathVariable Long id) {
+    @GetMapping("/films/{id}")
+    public FilmDto getFilmById(@PathVariable Integer id) {
         return filmService.getFilmById(id);
     }
 
-    @PutMapping("/{id}/like/{userId}")
-    public void addLike(@PathVariable Long id, @PathVariable Long userId) {
-        likeService.addLike(userId, id);
+    @PutMapping("/films/{id}/like/{userId}")
+    public void addLike(@PathVariable Integer id, @PathVariable Integer userId) {
+        filmService.addLike(id, userId);
     }
 
-    @DeleteMapping("/{id}/like/{userId}")
-    public void removeLike(@PathVariable Long id, @PathVariable Long userId) {
-        likeService.removeLike(userId, id);
+    @DeleteMapping("/films/{id}/like/{userId}")
+    public void removeLike(@PathVariable Integer id, @PathVariable Integer userId) {
+        filmService.deleteLike(userId, id);
     }
 
-    @GetMapping("/popular")
-    public Collection<Film> getPopular(@RequestParam(defaultValue = "10") int count) {
-        return filmService.popularFilms(count);
+    @GetMapping("/films/popular")
+    public Collection<FilmDto> getPopular(@RequestParam(defaultValue = "10") int count) {
+        return filmService.popularFilm(count);
     }
+
+    @GetMapping("/mpa")
+    public List<RatingMPADto> findAllMpa() {
+        return filmService.getAllMpa();
+    }
+
+    @GetMapping("/mpa/{id}")
+    public RatingMPADto findMpaById(@PathVariable int id) {
+        return filmService.getMpaById(id);
+    }
+
+    @GetMapping("/genres")
+    public List<GenreDto> findAllGenre() {
+        return filmService.getAllGenre();
+    }
+
+    @GetMapping("/genres/{id}")
+    public GenreDto findGenreById(@PathVariable int id) {
+        return filmService.getGenreById(id);
+    }
+
+
 }

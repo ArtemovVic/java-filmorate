@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.storage.user;
+package ru.yandex.practicum.filmorate.dal.storage.user;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -8,11 +8,12 @@ import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.*;
 
-@Component
-@Slf4j
-public class InMemoryUserStorage implements UserStorage {
 
-    private final Map<Long, User> users = new HashMap<>();
+@Slf4j
+@Component("InMemoryUserStorage")
+public class InMemoryUserStorage implements UserStorage, FriendStorage {
+
+    private final Map<Integer, User> users = new HashMap<>();
 
     @Override
     public Collection<User> getUsers() {
@@ -20,9 +21,9 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User getUserById(Long id) {
+    public Optional<User> getUserById(Integer id) {
         if (users.containsKey(id)) {
-            return users.get(id);
+            return Optional.ofNullable(users.get(id));
         }
         throw new NotFoundException("User with ID=" + id + " not found!");
     }
@@ -61,8 +62,9 @@ public class InMemoryUserStorage implements UserStorage {
         throw new NotFoundException("User with ID=" + newUser.getId() + " not found!");
     }
 
+
     @Override
-    public void addFriend(Long id, Long friendId) {
+    public void addFriend(Integer id, Integer friendId) {
 
         if (!users.containsKey(id) || !users.containsKey(friendId)) {
             log.error("One of the users not found: ID=" + id + " or ID=" + friendId);
@@ -74,7 +76,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public void removeFriend(Long id, Long friendId) {
+    public void removeFriend(Integer id, Integer friendId) {
 
         if (!users.containsKey(id) || !users.containsKey(friendId)) {
             log.error("One of the users not found: ID=" + id + " or ID=" + friendId);
@@ -87,7 +89,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public Collection<User> getFriends(Long id) {
+    public Collection<User> getFriends(Integer id) {
         if (!users.containsKey(id)) {
             log.error("Invalid id: {}", id);
             throw new NotFoundException("User with ID=" + id + " not found!");
@@ -101,25 +103,23 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public Collection<User> getCommonFriends(Long id, Long friendId) {
+    public Collection<User> getCommonFriends(Integer id, Integer friendId) {
         if (!users.containsKey(id) || !users.containsKey(friendId)) {
             throw new NotFoundException("One of the users not found: ID=" + id + " or ID=" + friendId);
         }
 
-        Set<Long> commonFriendIds = new HashSet<>(users.get(id).getFriendIds());
+        Set<Integer> commonFriendIds = new HashSet<>(users.get(id).getFriendIds());
         commonFriendIds.retainAll(users.get(friendId).getFriendIds());
 
-        List<User> commonFriends = commonFriendIds.stream()
+        return commonFriendIds.stream()
                 .map(users::get)
                 .toList();
-
-        return commonFriends;
     }
 
-    private Long getNextId() {
-        Long currentMaxId = users.keySet()
+    private Integer getNextId() {
+        int currentMaxId = users.keySet()
                 .stream()
-                .mapToLong(id -> id)
+                .mapToInt(id -> id)
                 .max()
                 .orElse(0);
         return ++currentMaxId;

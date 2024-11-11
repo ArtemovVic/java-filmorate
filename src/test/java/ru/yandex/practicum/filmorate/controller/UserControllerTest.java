@@ -4,6 +4,7 @@ import jakarta.validation.ValidationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import ru.yandex.practicum.filmorate.dto.UserDto;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
@@ -18,7 +19,7 @@ class UserControllerTest {
     @Test
     void shouldAddUser() {
         User user = User.builder().email("test@example.com").login("123").birthday(LocalDate.parse("2021-12-03")).build();
-        User addedUser = userController.addUser(user);
+        UserDto addedUser = userController.addUser(user);
 
         assertNotNull(addedUser);
         assertEquals(user.getEmail(), addedUser.getEmail());
@@ -29,7 +30,7 @@ class UserControllerTest {
     @Test
     void shouldAddUserWithOutName() {
         User user = User.builder().email("test123@example.com").login("123").birthday(LocalDate.parse("2021-12-03")).build();
-        User addedUser = userController.addUser(user);
+        UserDto addedUser = userController.addUser(user);
 
         assertEquals("123", addedUser.getName());
     }
