@@ -15,6 +15,7 @@ import java.util.Optional;
 public class GenreDBStorage extends BaseDBStorage<Genre> {
     private static final String GENRE_QUERY = "SELECT genre_id, genre_name FROM genres WHERE genre_id = ?";
     private static final String ALL_GENRE_QUERY = "SELECT genre_id, genre_name FROM genres";
+
     public GenreDBStorage(JdbcTemplate jdbc, RowMapper<Genre> mapper) {
         super(jdbc, mapper);
     }

@@ -25,16 +25,13 @@ class FilmControllerTest {
         assertEquals(film.getName(), addedFilm.getName());
         assertEquals(film.getDescription(), addedFilm.getDescription());
         assertEquals(film.getReleaseDate(), addedFilm.getReleaseDate());
-        assertNotNull(addedFilm.getId());
     }
 
     @Test
     void shouldDropValidateExpWhenAddFilmWithInvalidReleaseDate() {
         Film film = Film.builder().name("testexample").description("testexample123").releaseDate(LocalDate.parse("1021-12-03")).duration(30).build();
 
-        Exception exception = assertThrows(ValidationException.class, () -> {
-            filmController.addFilm(film);
-        });
+        Exception exception = assertThrows(ValidationException.class, () -> filmController.addFilm(film));
 
         assertTrue(exception.getMessage().contains("Некорректная дата релиза"));
     }
@@ -43,9 +40,7 @@ class FilmControllerTest {
     void shouldDropValidateExpWhenAddFilmWithInvalidDuration() {
         Film film = Film.builder().name("testexample").description("testexample123").releaseDate(LocalDate.parse("2021-12-03")).duration(-30).build();
 
-        Exception exception = assertThrows(ValidationException.class, () -> {
-            filmController.addFilm(film);
-        });
+        Exception exception = assertThrows(ValidationException.class, () -> filmController.addFilm(film));
 
         assertTrue(exception.getMessage().contains("должно быть больше или равно 0"));
     }
@@ -55,9 +50,7 @@ class FilmControllerTest {
         Film film = Film.builder().name("testexample").description("t".repeat(201))
                 .releaseDate(LocalDate.parse("2021-12-03")).duration(30).build();
 
-        Exception exception = assertThrows(ValidationException.class, () -> {
-            filmController.addFilm(film);
-        });
+        Exception exception = assertThrows(ValidationException.class, () -> filmController.addFilm(film));
 
         assertTrue(exception.getMessage().contains("размер должен находиться в диапазоне от 0 до 200"));
     }
@@ -66,9 +59,7 @@ class FilmControllerTest {
     void shouldDropValidateExpWhenAddFilmWithBlankName() {
         Film film = Film.builder().name("").description("testexample123").releaseDate(LocalDate.parse("2021-12-03")).duration(30).build();
 
-        Exception exception = assertThrows(ValidationException.class, () -> {
-            filmController.addFilm(film);
-        });
+        Exception exception = assertThrows(ValidationException.class, () -> filmController.addFilm(film));
 
         assertTrue(exception.getMessage().contains("не должно быть пустым"));
     }

@@ -18,7 +18,6 @@ public class FriendsDBStorage extends BaseDBStorage<User> {
             "VALUES (?,?,?)";
     private static final String UPDATE_FRIEND_STATUS_QUERY = "UPDATE friends " +
             "SET status = ? WHERE user_id = ? AND friend_id = ?";
-    private static final String FIND_STATUS_QUERY = "SELECT status FROM friends WHERE user_id = ? AND friend_id = ?";
     private static final String FIND_ALL_FRIEND_FOR_ID_QUERY =
             "SELECT u.user_id, u.user_name, u.email, u.login, u.birthday" +
                     " FROM friends f" +
@@ -61,14 +60,9 @@ public class FriendsDBStorage extends BaseDBStorage<User> {
         );
     }
 
-
     public List<User> getFriendsById(int userId) {
         return findMany(FIND_ALL_FRIEND_FOR_ID_QUERY, userId);
     }
-
-    /*public Optional<User> checkFriendsInDB(int userId, int friendId) {
-        return findOne(FIND_STATUS_QUERY, mapperInt, userId, friendId);
-    }*/
 
     public Optional<Boolean> checkFriendsInDB(int userId, int friendId) {
         String sql = "SELECT status FROM friends WHERE user_id = ? AND friend_id = ?";

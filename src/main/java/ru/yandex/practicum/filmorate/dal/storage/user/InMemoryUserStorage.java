@@ -95,11 +95,9 @@ public class InMemoryUserStorage implements UserStorage, FriendStorage {
             throw new NotFoundException("User with ID=" + id + " not found!");
         }
 
-        List<User> friends = users.get(id).getFriendIds().stream()
+        return users.get(id).getFriendIds().stream()
                 .map(users::get)
                 .toList();
-
-        return friends;
     }
 
     @Override

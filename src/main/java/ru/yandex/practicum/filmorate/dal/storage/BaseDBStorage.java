@@ -36,10 +36,7 @@ public class BaseDBStorage<T> {
     }
 
     protected void update(String query, Object... params) {
-        int rowsUpdated = jdbc.update(query, params);
-        /*if (rowsUpdated == 0) {
-            throw new InternalServerException("Не удалось обновить данные");
-        }*/
+        jdbc.update(query, params);
     }
 
     protected int insert(String query, Object... params) {

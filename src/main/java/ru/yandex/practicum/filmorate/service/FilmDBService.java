@@ -14,7 +14,6 @@ import ru.yandex.practicum.filmorate.dto.RatingMPADto;
 import ru.yandex.practicum.filmorate.exception.InternalServerException;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.Genre;
 
 import java.util.Collection;
 import java.util.List;
@@ -134,19 +133,6 @@ public class FilmDBService {
         return id == 0;
     }
 
-    public Film setMpa(Film film) {
-        if (film.getMpa() != null) {
-            int mpaId = film.getMpa().getId();
-            if (mpaDBStorage.findMpaByID(mpaId).isPresent()) {
-                film.setMpa(mpaDBStorage.findMpaByID(mpaId).get());
-                return film;
-            } else {
-                log.error("Введен несуществующий mpa");
-                throw new NotFoundException("mpa с таким id не существует");
-            }
-        }
-        return film;
-    }
 
     public void searchAndSetMpa(Film film) {
         if (mpaDBStorage.findMpaByFilmId(film.getId()).isPresent()) {
@@ -156,20 +142,6 @@ public class FilmDBService {
 
     public void searchAndSetGenre(Film film) {
         film.getGenres().addAll(filmGenreDBStorage.getGenreForFilm(film.getId()));
-    }
-
-    public Film setGenre(Film film) {
-        if (film.getGenres() != null) {
-            Collection<Genre> genres = film.getGenres();
-            genres = genreDBStorage.getListGenre(genres);
-            if (genres.isEmpty()) {
-                log.error("Введен несуществующий жанр");
-                throw new NotFoundException("Жанр с таким id не существует");
-            }
-            film.getGenres().addAll(genres);
-            return film;
-        }
-        return film;
     }
 
     public void addToFilmGenreDB(Film film) {
