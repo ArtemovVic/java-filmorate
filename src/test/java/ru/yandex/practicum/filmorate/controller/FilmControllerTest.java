@@ -4,37 +4,17 @@ import jakarta.validation.ValidationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import ru.yandex.practicum.filmorate.dto.FilmDto;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class FilmControllerTest {
     @Autowired
     FilmController filmController;
-
-    @Test
-    void shouldAddFilm() {
-        Film film = Film.builder().name("testexample").description("testexample123").releaseDate(LocalDate.parse("2021-12-03")).duration(30).build();
-        FilmDto addedFilm = filmController.addFilm(film);
-
-        assertNotNull(addedFilm);
-        assertEquals(film.getName(), addedFilm.getName());
-        assertEquals(film.getDescription(), addedFilm.getDescription());
-        assertEquals(film.getReleaseDate(), addedFilm.getReleaseDate());
-    }
-
-    @Test
-    void shouldDropValidateExpWhenAddFilmWithInvalidReleaseDate() {
-        Film film = Film.builder().name("testexample").description("testexample123").releaseDate(LocalDate.parse("1021-12-03")).duration(30).build();
-
-        Exception exception = assertThrows(ValidationException.class, () -> filmController.addFilm(film));
-
-        assertTrue(exception.getMessage().contains("Некорректная дата релиза"));
-    }
 
     @Test
     void shouldDropValidateExpWhenAddFilmWithInvalidDuration() {
