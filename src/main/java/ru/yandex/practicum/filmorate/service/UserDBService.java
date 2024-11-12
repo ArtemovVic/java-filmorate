@@ -30,64 +30,61 @@ public class UserDBService {
     }
 
     public List<UserDto> getAllUsers() {
+        log.info("Запрошен список пользователей");
         return listUserToListDto(userDBStorage.getUsers());
 
     }
 
     public Optional<UserDto> getUserByID(Integer id) {
+        log.info("Запрошен пользователей с id {}", id);
         return userDBStorage.getUserById(id).map(UserMapper::mapToUserDto);
     }
 
     public UserDto addUser(User user) {
         checkForCreate(user);
+        log.info("Добавлен пользователей с id {}", user.getId());
         return UserMapper.mapToUserDto(userDBStorage.addUser(user));
     }
 
     public UserDto updateUser(User user) {
         checkForUpdate(user);
+        log.info("Обновлен пользователь с id {}", user.getId());
         return UserMapper.mapToUserDto(userDBStorage.updateUser(user));
     }
 
-
-    public void addFriend(int idUser, int idFriend) {
-        if (idUser == idFriend) {
+    public void addFriend(int userId, int friendId) {
+        if (userId == friendId) {
             log.error("Пользователь указал одинаковые id");
             throw new ValidationException("Вы не можете указать одинаковые id для двух пользователей");
         }
-        checkUserId(idUser);
-        checkUserId(idFriend);
+        checkUserId(userId);
+        checkUserId(friendId);
 
-        if (friendsDBStorage.checkFriendsInDB(idUser, idFriend).isEmpty()) {
-            friendsDBStorage.insertFriend(idUser, idFriend, false);
+        if (friendsDBStorage.checkFriendsInDB(userId, friendId).isEmpty()) {
+            friendsDBStorage.insertFriend(userId, friendId, false);
         } else {
             log.error("Пользователь повторно добавил в друзья пользователя");
-            throw new ValidationException("Пользователь с id " + idFriend + " уже есть в списке друзей id " + idUser);
+            throw new ValidationException("Пользователь с id " + friendId + " уже есть в списке друзей id " + userId);
         }
-
-
-        //updateFriendStatus(idUser, idFriend);
-        listUserToListDto(friendsDBStorage.getFriendsById(idUser));
+        listUserToListDto(friendsDBStorage.getFriendsById(userId));
+        log.info("Пользователь с id: {} добавил в друзья пользователя с id: {}", userId, friendId);
 
     }
 
     public List<UserDto> friendsListById(int id) {
         checkUserId(id);
+        log.info("Запрошен список друзей пользователя с id {}", id);
         return listUserToListDto(friendsDBStorage.getFriendsById(id));
     }
 
-    public void removeFriend(int idUser, int idFriend) {
-        checkUserId(idUser);
-        checkUserId(idFriend);
+    public void removeFriend(int userId, int friendId) {
+        checkUserId(userId);
+        checkUserId(friendId);
 
-        /*Optional<Boolean> friendship = friendsDBStorage.checkFriendsInDB(idUser, idFriend);
-        if (friendship.isEmpty()) {
-            log.error("Пользователи не являются друзьями");
-            throw new ValidationException("Пользователи не являются друзьями");
-        }*/
+        friendsDBStorage.deleteFriend(userId, friendId);
 
-        friendsDBStorage.deleteFriend(idUser, idFriend);
-
-        listUserToListDto(friendsDBStorage.getFriendsById(idUser));
+        listUserToListDto(friendsDBStorage.getFriendsById(userId));
+        log.info("Пользователь с id: {} добавил в друзья пользователя с id: {}", userId, friendId);
     }
 
     public void checkForCreate(User user) {

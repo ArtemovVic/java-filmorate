@@ -68,12 +68,4 @@ public class BaseDBStorage<T> {
             return ps;
         });
     }
-
-    /*protected void insertMany(String query) {
-        int count = jdbc.update(query);
-        if (count > 0) {
-        } else {
-            throw new InternalServerException("Не удалось сохранить данные");
-        }
-    }*/
 }

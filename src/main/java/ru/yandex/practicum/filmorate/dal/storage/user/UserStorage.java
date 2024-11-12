@@ -18,10 +18,3 @@ public interface UserStorage {
 
 }
 
-/*void addFriend(Integer id, Integer friendId);
-
-    void removeFriend(Integer id, Integer friendId);
-
-    Collection<User> getFriends(Integer id);
-
-    Collection<User> getCommonFriends(Integer id, Integer friendId);*/

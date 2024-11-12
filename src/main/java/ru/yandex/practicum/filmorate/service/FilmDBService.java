@@ -50,12 +50,14 @@ public class FilmDBService {
         if (!film.getGenres().isEmpty()) {
             addToFilmGenreDB(film);
         }
+        log.info("Добавлен фильм  с id {}", film.getId());
         return FilmMapper.mapToFilmDto(film);
     }
 
     public FilmDto updateFilm(Film film) {
         checkForUpdate(film);
         filmDBStorage.updateFilm(film);
+        log.info("Обнавлен фильм  с id {}", film.getId());
         return FilmMapper.mapToFilmDto(film);
     }
 
@@ -67,6 +69,7 @@ public class FilmDBService {
         Film film = filmDBStorage.getFilmById(id).get();
         searchAndSetMpa(film);
         searchAndSetGenre(film);
+        log.info("Запрошен фильм  с id {}", film.getId());
         return FilmMapper.mapToFilmDto((film));
     }
 
@@ -78,11 +81,13 @@ public class FilmDBService {
     public void addLike(int filmId, int userId) {
         userDBService.checkUserId(userId);
         likeDBStorage.addLikeToFilm(filmId, userId);
+        log.info("Добавлен лайк фильму с id {} от пользователя с id {}", filmId, userId);
     }
 
     public void deleteLike(int filmId, int userId) {
         userDBService.checkUserId(userId);
         likeDBStorage.deleteLike(filmId, userId);
+        log.info("Удален лайк фильму с id {} от пользователя с id {}", filmId, userId);
     }
 
     public List<FilmDto> popularFilm(int count) {
@@ -151,8 +156,6 @@ public class FilmDBService {
     public List<FilmDto> listFilmToListDto(Collection<Film> listFilm) {
         return listFilm
                 .stream()
-                /*.map(this::setMpa)
-                .map(this::setGenre)*/
                 .map(FilmMapper::mapToFilmDto)
                 .toList();
     }
