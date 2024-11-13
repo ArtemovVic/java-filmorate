@@ -3,9 +3,9 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.dal.storage.film.FilmStorage;
+import ru.yandex.practicum.filmorate.dal.storage.user.UserStorage;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
-import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
-import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 @Service
 @Slf4j
@@ -19,24 +19,22 @@ public class LikeService {
         this.userStorage = userStorage;
     }
 
-    public void addLike(Long userId, Long filmId) {
+    public void addLike(Integer userId, Integer filmId) {
         validateUserAndFilm(userId, filmId);
-        filmStorage.getFilmById(filmId).getLikes().add(userId);
         log.info("Like successfully added to film: " + filmId);
     }
 
-    public void removeLike(Long userId, Long filmId) {
+    public void removeLike(Integer userId, Integer filmId) {
         validateUserAndFilm(userId, filmId);
-        filmStorage.getFilmById(filmId).getLikes().remove(userId);
         log.info("Like successfully remove from film: " + filmId);
     }
 
-    private void validateUserAndFilm(Long userId, Long filmId) {
-        if (userStorage.getUserById(userId) == null) {
+    private void validateUserAndFilm(Integer userId, Integer filmId) {
+        if (userStorage.getUserById(userId).isEmpty()) {
             log.error("Invalid id for user: {}", userId);
             throw new NotFoundException("User with ID=" + userId + " not found!");
         }
-        if (filmStorage.getFilmById(filmId) == null) {
+        if (filmStorage.getFilmById(filmId).isEmpty()) {
             log.error("Invalid id for film: {}", filmId);
             throw new NotFoundException("Film with ID=" + filmId + " not found!");
         }

@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.storage.film;
+package ru.yandex.practicum.filmorate.dal.storage.film;
 
 import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
@@ -8,12 +8,15 @@ import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
-@Component
 @Slf4j
+@Component("InMemoryFilmStorage")
 public class InMemoryFilmStorage implements FilmStorage {
-    private final Map<Long, Film> films = new HashMap<>();
+    private final Map<Integer, Film> films = new HashMap<>();
 
     @Override
     public Collection<Film> getFilms() {
@@ -21,9 +24,9 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public Film getFilmById(Long id) {
+    public Optional<Film> getFilmById(Integer id) {
         if (films.containsKey(id)) {
-            return films.get(id);
+            return Optional.ofNullable(films.get(id));
         }
         log.error("Film not found ID: {}", id);
         throw new NotFoundException("User with ID=" + id + " not found!");
@@ -65,10 +68,15 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public Long getNextId() {
-        Long currentMaxId = films.keySet()
+    public Collection<Film> popularFilm(int count) {
+        return null;
+    }
+
+
+    private Integer getNextId() {
+        int currentMaxId = films.keySet()
                 .stream()
-                .mapToLong(id -> id)
+                .mapToInt(id -> id)
                 .max()
                 .orElse(0);
         return ++currentMaxId;

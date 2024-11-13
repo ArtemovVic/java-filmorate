@@ -3,19 +3,20 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.dal.storage.user.InMemoryUserStorage;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @Service
 @Slf4j
 public class UserService {
 
-    private final UserStorage storage;
+    private final InMemoryUserStorage storage;
 
     @Autowired
-    public UserService(UserStorage storage) {
+    public UserService(InMemoryUserStorage storage) {
         this.storage = storage;
     }
 
@@ -24,8 +25,8 @@ public class UserService {
         return storage.getUsers();
     }
 
-    public User getUserById(Long id) {
-        User result = storage.getUserById(id);
+    public Optional<User> getUserById(Integer id) {
+        Optional<User> result = storage.getUserById(id);
         log.info("User successfully received ID: {}", id);
         return result;
     }
@@ -42,24 +43,24 @@ public class UserService {
         return result;
     }
 
-    public void addFriend(Long id, Long friendId) {
+    public void addFriend(Integer id, Integer friendId) {
         storage.addFriend(id, friendId);
         log.info("Friend successfully added ID: {}", friendId);
     }
 
-    public void removeFriend(Long id, Long friendId) {
+    public void removeFriend(Integer id, Integer friendId) {
         storage.removeFriend(id, friendId);
         log.info("Friend successfully remove ID: {}", friendId);
 
     }
 
-    public Collection<User> getFriends(Long id) {
+    public Collection<User> getFriends(Integer id) {
         Collection<User> result = storage.getFriends(id);
         log.info("Requested list of friends: {}", result.size());
         return result;
     }
 
-    public Collection<User> getCommonFriends(Long id, Long friendId) {
+    public Collection<User> getCommonFriends(Integer id, Integer friendId) {
         Collection<User> result = storage.getCommonFriends(id, friendId);
         log.info("Requested list of CommonFriends: {}", result.size());
         return result;
